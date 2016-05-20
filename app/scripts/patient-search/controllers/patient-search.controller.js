@@ -57,6 +57,10 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
       $state.go('patient', {
         uuid: patientUuid
       });
+      var params={
+        patientID:patientUuid
+      }
+      syncronizePatientLabOrders(params);
     };
 
     $scope.pageChanged = function() {
@@ -98,6 +102,14 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
           $scope.currentPage = 1;
         }
       );
+    }
+    function getSyncronizePatientLabOrders(params){
+      params['apikey']='35243eba2';
+      params['startDate']='2006-01-01';
+      params['endDate']='2016-04-27';
+      //EIDRestService.getPatientLabOrdersService().getPatientLabOrderResults(params)
+      //.then(function(success){})
+      //.catch(function(error){});
     }
   }
 })();
