@@ -46,7 +46,8 @@
       getIndicatorsSchemaWithSections: getIndicatorsSchemaWithSections,
       getPatientLevelReminders:getPatientLevelReminders,
       getPatientListReportByIndicatorAndLocation:getPatientListReportByIndicatorAndLocation,
-      getHivOverviewVisualizationReport: getHivOverviewVisualizationReport
+      getHivOverviewVisualizationReport: getHivOverviewVisualizationReport,
+      getPatientLabOrderResults:getPatientLabOrderResults
 
     };
     return serviceDefinition;
@@ -787,6 +788,16 @@
         });
 
     }
-
+    function getPatientLabOrderResults(params,successCallback,failedCallback){
+      console.log("getPatientLabOrderResults called ",params);
+      var resource=getResource('patient-lab-orders');
+      return resource.get(params).$promise
+      .then(function(response){
+        successCallback(response);
+      })
+      .catch(function(error){
+        failedCallback(error);
+      })
+    }
     }
 })();

@@ -12,11 +12,11 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
     .controller('PatientSearchCtrl', PatientSearchCtrl);
 
   PatientSearchCtrl.$inject = ['$rootScope', 'OpenmrsRestService', '$scope',
-    '$log', 'filterFilter', '$state', 'PatientSearchService', '$window', '$timeout'
+    '$log', 'filterFilter', '$state', 'PatientSearchService', '$window', '$timeout','EtlRestService'
   ];
 
   function PatientSearchCtrl($rootScope, OpenmrsRestService, $scope, $log,
-    filterFilter, $state, PatientSearchService, $window, $timeout) {
+    filterFilter, $state, PatientSearchService, $window, $timeout,EtlRestService) {
     $scope.filter = '';
     $scope.patients = PatientSearchService.getPatients();
     $scope.isBusy = false;
@@ -58,9 +58,10 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
         uuid: patientUuid
       });
       var params={
-        patientID:patientUuid
+        //patientID:$rootScope.broadcastPatient.commonIdentifiers().ampathMrsUId
+        patientID:'15365BS-5'
       }
-      syncronizePatientLabOrders(params);
+      getSyncronizedPatientLabOrders(params);
     };
 
     $scope.pageChanged = function() {
@@ -103,13 +104,17 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
         }
       );
     }
-    function getSyncronizePatientLabOrders(params){
+    function getSyncronizedPatientLabOrders(params){
       params['apikey']='35243eba2';
       params['startDate']='2006-01-01';
       params['endDate']='2016-04-27';
-      //EIDRestService.getPatientLabOrdersService().getPatientLabOrderResults(params)
-      //.then(function(success){})
-      //.catch(function(error){});
+      EtlRestService.getPatientLabOrderResults(params,
+        function successCallback(response){
+        console.log('patient lab orders success response is ',response);
+      },
+    function failedCallback(error){
+      console.error('patient lab orders error response is ',error);
+    });
     }
   }
 })();
